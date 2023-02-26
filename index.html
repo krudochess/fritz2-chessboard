@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="">
 <style>
+    body {
+        background: #f2eecb;
+    }
     .board {
         width: 320px;
         height: 320px;
@@ -66,7 +69,7 @@
                 row++;
                 col = -1;
             }
-            board.innerHTML += '<div class="p ' + piece + '" style="left:'+(col*40)+'px;top:'+(row*40)+'px;"></div>';
+            board.innerHTML += '<div draggable="true" class="p ' + piece + '" style="left:'+(col*40)+'px;top:'+(row*40)+'px;"></div>';
             col += shift
         }
     })
