@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<title>Page Title</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="">
+<style>
+    .board {
+        width: 320px;
+        height: 320px;
+        border: 1px solid #000;
+        position: relative;
+    }
+    .s {
+        float: left;
+        width: 40px;
+        height: 40px;
+    }
+    .b {
+        background: url("pieces/hatching.png");
+    }
+    .p {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+    }
+    .wp { background: url("pieces/wp.png") no-repeat; }
+    .wn { background: url("pieces/wn.png") no-repeat; }
+    .wb { background: url("pieces/wb.png") no-repeat; }
+    .wr { background: url("pieces/wr.png") no-repeat; }
+    .wq { background: url("pieces/wq.png") no-repeat; }
+    .wk { background: url("pieces/wk.png") no-repeat; }
+    .bp { background: url("pieces/bp.png") no-repeat; }
+    .bn { background: url("pieces/bn.png") no-repeat; }
+    .bb { background: url("pieces/bb.png") no-repeat; }
+    .br { background: url("pieces/br.png") no-repeat; }
+    .bq { background: url("pieces/bq.png") no-repeat; }
+    .bk { background: url("pieces/bk.png") no-repeat; }
+</style>
+<body>
+
+<div class="board" data-position="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"></div>
+
+<script>
+    [...document.getElementsByClassName("board")].forEach(board => {
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                let isWhite = (row + col) % 2 === 0;
+                board.innerHTML += '<div class="s' + (isWhite ? '' : ' b') + '"></div>';
+            }
+        }
+        let position = board.getAttribute('data-position')
+        console.log("po", position)
+        let col = 0;
+        let row = 0;
+        for (let index in position) {
+            let piece = "";
+            let shift = 1;
+            if (position[index].match(/[1-8]/)) {
+                shift = position[index];
+            } else if (position[index].match(/[a-z]/)) {
+                piece = "b" + position[index];
+            } else if (position[index].match(/[A-Z]/)) {
+                piece = "w" + position[index].toLowerCase();
+            } else {
+                row++;
+                col = -1;
+            }
+            board.innerHTML += '<div class="p ' + piece + '" style="left:'+(col*40)+'px;top:'+(row*40)+'px;"></div>';
+            col += shift
+        }
+    })
+</script>
+</body>
+</html>
+
