@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="">
 <style>
     body {
-        background: #f2eecb;
+        background: #fbf9f6;
     }
     .board {
         width: 320px;
@@ -26,6 +26,13 @@
         position: absolute;
         width: 40px;
         height: 40px;
+        cursor: grab;
+    }
+    .p:active {
+        cursor: grabbing;
+    }
+    .p:active:hover {
+        cursor: grabbing;
     }
     .wp { background: url("pieces/wp.png") no-repeat; }
     .wn { background: url("pieces/wn.png") no-repeat; }
@@ -46,33 +53,42 @@
 
 <script>
     [...document.getElementsByClassName("board")].forEach(board => {
+        let squares = "";
         for (let row = 0; row < 8; row++) {
             for (let col = 0; col < 8; col++) {
                 let isWhite = (row + col) % 2 === 0;
-                board.innerHTML += '<div class="s' + (isWhite ? '' : ' b') + '"></div>';
+                 squares += '<div draggable="false" class="s' + (isWhite ? '' : ' b') + '"></div>';
             }
         }
+        board.innerHTML += '<div>' + squares + '</div>'
         let position = board.getAttribute('data-position')
-        console.log("po", position)
         let col = 0;
         let row = 0;
+        let pieces = "";
         for (let index in position) {
             let piece = "";
             let shift = 1;
             if (position[index].match(/[1-8]/)) {
-                shift = position[index];
+                col += position[index];
+                continue;
             } else if (position[index].match(/[a-z]/)) {
                 piece = "b" + position[index];
             } else if (position[index].match(/[A-Z]/)) {
                 piece = "w" + position[index].toLowerCase();
             } else {
                 row++;
-                col = -1;
+                col = 0;
+                continue;
             }
-            board.innerHTML += '<div draggable="true" class="p ' + piece + '" style="left:'+(col*40)+'px;top:'+(row*40)+'px;"></div>';
+            pieces += '<div draggable="true" class="p" style="left:'+(col*40)+'px;top:'+(row*40)+'px;" ><img src="pieces/'+ piece + '.png" /></div>';
             col += shift
         }
+        board.innerHTML += '<div>' + pieces + '</div>';
     })
+    document.addEventListener("dragover", (event) => {
+
+        event.preventDefault();
+    });
 </script>
 </body>
 </html>
